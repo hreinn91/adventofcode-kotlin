@@ -1,6 +1,7 @@
 package year2021.day5
 
 import java.io.File
+import kotlin.math.abs
 
 class VentLines(filename: String) {
 
@@ -19,9 +20,14 @@ class VentLines(filename: String) {
             .toList()
 
         overLapCount = calculateOverlap()
-        overlapPoints.forEach{(key, value) ->
-            if(key.x > xSize) { xSize = key.x}
-            if(key.y > ySize) { ySize = key.y}
+        overLapCountIncludingDiagonal = calculateOverlapIncludingDiagonal()
+        overlapPoints.forEach { (key, value) ->
+            if (key.x > xSize) {
+                xSize = key.x
+            }
+            if (key.y > ySize) {
+                ySize = key.y
+            }
         }
     }
 
@@ -33,20 +39,28 @@ class VentLines(filename: String) {
     private fun calculateOverlap(): Int {
         lines.stream().map { line -> line.getPoints() }
             .flatMap { points -> points.stream() }
-            .forEach { addOverlap(it) }
+            .forEach { addOverlap(it, overlapPoints) }
 
         var overlapCount = 0
-        overlapPoints.forEach{(key, value) -> if(value >= 2){overlapCount+=1} }
+        overlapPoints.forEach { (key, value) ->
+            if (value >= 2) {
+                overlapCount += 1
+            }
+        }
         return overlapCount
     }
 
     private fun calculateOverlapIncludingDiagonal(): Int {
-        lines.stream().map { line -> line.getPoints() }
+        lines.stream().map { line -> line.getPointsIncludingDiagonal() }
             .flatMap { points -> points.stream() }
-            .forEach { addOverlap(it) }
+            .forEach { addOverlap(it, overlapPointsIncludingDiagonals) }
 
         var overlapCount = 0
-        overlapPoints.forEach{(key, value) -> if(value >= 2){overlapCount+=1} }
+        overlapPointsIncludingDiagonals.forEach { (key, value) ->
+            if (value >= 2) {
+                overlapCount += 1
+            }
+        }
         return overlapCount
     }
 
@@ -54,26 +68,42 @@ class VentLines(filename: String) {
         return lines[i]
     }
 
-    private fun addOverlap(point: Point){
-        if(overlapPoints.containsKey(point)){
-            overlapPoints[point] = overlapPoints[point]!! + 1
-        }else{
-            overlapPoints[point] = 1
+    private fun addOverlap(point: Point, overlapMap: MutableMap<Point, Int>) {
+        if (overlapMap.containsKey(point)) {
+            overlapMap[point] = overlapMap[point]!! + 1
+        } else {
+            overlapMap[point] = 1
         }
     }
 
     override fun toString(): String {
         var res = ""
-        for(row in 0..ySize){
-            for(col in 0..xSize){
-                res += if(overlapPoints.containsKey(Point(col, row))){
+        for (row in 0..ySize) {
+            for (col in 0..xSize) {
+                res += if (overlapPoints.containsKey(Point(col, row))) {
                     val value: Int = overlapPoints[Point(col, row)]!!
                     "$value"
-                } else{
+                } else {
                     "."
                 }
             }
-            res+="\n"
+            res += "\n"
+        }
+        return res
+    }
+
+    fun toStringWithDiagonals(): String {
+        var res = ""
+        for (row in 0..ySize) {
+            for (col in 0..xSize) {
+                res += if (overlapPointsIncludingDiagonals.containsKey(Point(col, row))) {
+                    val value: Int = overlapPointsIncludingDiagonals[Point(col, row)]!!
+                    "$value"
+                } else {
+                    "."
+                }
+            }
+            res += "\n"
         }
         return res
     }
@@ -94,13 +124,13 @@ class Line(coordinateString: String) {
     fun getPoints(): List<Point> {
         if (p1.y == p2.y) {
             val start: Int = if (p1.x < p2.x) p1.x else p2.x
-            val stop: Int  = if (p1.x > p2.x) p1.x else p2.x
+            val stop: Int = if (p1.x > p2.x) p1.x else p2.x
             return (start..stop).map { x -> Point(x, p1.y) }.toList()
         }
 
         if (p1.x == p2.x) {
             val start: Int = if (p1.y < p2.y) p1.y else p2.y
-            val stop: Int  = if (p1.y > p2.y) p1.y else p2.y
+            val stop: Int = if (p1.y > p2.y) p1.y else p2.y
             return (start..stop).map { y -> Point(p1.x, y) }.toList()
         }
         return emptyList()
@@ -109,15 +139,22 @@ class Line(coordinateString: String) {
     fun getPointsIncludingDiagonal(): List<Point> {
         if (p1.y == p2.y) {
             val start: Int = if (p1.x < p2.x) p1.x else p2.x
-            val stop: Int  = if (p1.x > p2.x) p1.x else p2.x
+            val stop: Int = if (p1.x > p2.x) p1.x else p2.x
             return (start..stop).map { x -> Point(x, p1.y) }.toList()
         }
-
         if (p1.x == p2.x) {
             val start: Int = if (p1.y < p2.y) p1.y else p2.y
-            val stop: Int  = if (p1.y > p2.y) p1.y else p2.y
+            val stop: Int = if (p1.y > p2.y) p1.y else p2.y
             return (start..stop).map { y -> Point(p1.x, y) }.toList()
         }
+        if (abs(p1.x - p2.x) == abs(p1.y - p2.y)) {
+            return (0..abs(p1.x - p2.x))
+                .map { Point(if (p1.x < p2.x) {p1.x + it} else {p1.x - it},
+                    if (p1.y < p2.y) {p1.y + it} else {p1.y - it}) }
+                .toList()
+        }
+
+
         return emptyList()
     }
 }

@@ -63,8 +63,51 @@ internal class VentLinesTest {
     @Test
     fun calculateOverlapInput1() {
         val ventLines = VentLines("input/day5/input.txt")
-
-
         println("test1 overlap ${ventLines.overLapCount}")
+    }
+
+    @Test
+    fun getPointsIncludingDiagonal() {
+        val diagonalLine = Line("1,1 -> 3,3").getPointsIncludingDiagonal()
+        assertTrue(diagonalLine.containsAll(listOf(
+            Point(1,1),
+            Point(2,2),
+            Point(3,3),
+        )) )
+    }
+
+    @Test
+    fun getPointsIncludingReverseDiagonal() {
+        val diagonalLine = Line("9,7 -> 7,9").getPointsIncludingDiagonal()
+        assertTrue(diagonalLine.containsAll(listOf(
+            Point(7,9),
+            Point(8,8),
+            Point(9,7),
+        )) )
+
+        val lineDiagonal = Line("7,9 -> 9,7").getPointsIncludingDiagonal()
+        assertTrue(lineDiagonal.containsAll(listOf(
+            Point(9, 7),
+            Point(8, 8),
+            Point(7, 9),
+        )) )
+    }
+
+
+    @Test
+    fun calculateOverlap_IncludingDiagonal_Test2() {
+        val ventLines = VentLines("input/day5/test1.txt")
+
+        assertEquals(12, ventLines.overLapCountIncludingDiagonal)
+
+        println(ventLines.toStringWithDiagonals())
+        println("test2 overlap ${ventLines.overLapCountIncludingDiagonal}")
+    }
+
+
+    @Test
+    fun calculateOverlap_IncludingDiagonal_Input2() {
+        val ventLines = VentLines("input/day5/input.txt")
+        println("input2 overlap ${ventLines.overLapCountIncludingDiagonal}")
     }
 }
