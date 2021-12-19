@@ -54,4 +54,28 @@ internal class BingoGameTest {
         val win = drawn.stream().map { board.draw(it) }.filter { it }.findAny().orElseThrow()
         assertTrue(win)
     }
+
+    @Test
+    fun test1_play(){
+        val game = BingoGame("input/day4/test1.txt")
+        println(game.play())
+    }
+
+    @Test
+    fun test2_play(){
+        val game = BingoGame("input/day4/test1.txt")
+        println(game.playToLose())
+    }
+
+    @Test
+    fun input1_play(){
+        val game = BingoGame("input/day4/input.txt")
+        println(game.play())
+    }
+
+    @Test
+    fun input2_play(){
+        val game = BingoGame("input/day4/input.txt")
+        println(game.playToLose())
+    }
 }

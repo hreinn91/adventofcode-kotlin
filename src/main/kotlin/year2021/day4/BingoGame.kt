@@ -1,7 +1,6 @@
 package year2021.day4
 
 import java.io.File
-import java.lang.IndexOutOfBoundsException
 
 class BingoGame(filename: String) {
 
@@ -23,6 +22,40 @@ class BingoGame(filename: String) {
     private fun getRawInput(filename: String): String {
         val path = "src/main/resources/"
         return File(path + filename).readText()
+    }
+
+    fun play(): Int {
+        for (number in bingoDraws){
+            for(board in bingoBoards){
+                if(board.draw(number)){
+                    return board.getScore(number)
+                }
+            }
+        }
+        throw IllegalStateException("No winner")
+    }
+
+    fun playToLose(): Int {
+        val boards: MutableList<BingoBoard> = bingoBoards.toMutableList()
+        for (number in bingoDraws){
+            for(board in findWinners(number, boards)){
+                if(boards.size == 1){
+                    return boards[0].getScore(number)
+                }
+                boards.remove(board)
+            }
+        }
+        throw IllegalStateException("No final winner.")
+    }
+
+    private fun findWinners(number: Int, boards: MutableList<BingoBoard>): List<BingoBoard> {
+        val winners = mutableListOf<BingoBoard>()
+        for(board in boards){
+            if(board.draw(number)){
+                winners.add(board)
+            }
+        }
+        return winners
     }
 
 }
@@ -81,5 +114,9 @@ class BingoBoard(board: String) {
             }
         }
         return false
+    }
+
+    fun getScore(number: Int): Int {
+        return unmarked.sum() * number
     }
 }
