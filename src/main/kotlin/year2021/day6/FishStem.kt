@@ -11,17 +11,26 @@ class FishStem(filename: String) {
     }
 
     fun step(days: Int){
-        (0..days).
+        (0..days).forEach{ _ ->
+            println(this)
+            step()
+        }
     }
 
-    fun step(){
-
+    private fun step(){
+        day += 1
+        val newFishCount = stem.stream().filter { fish -> fish.step() }.count()
+        for(i in 0 until newFishCount){
+            stem.add(LightFish(8))
+        }
     }
 
     override fun toString(): String {
         var res = ""
-        stem.stream().forEach{ fish -> res+=",${fish.state}" }
-        return "FishStem day $day $res"
+        if(stem.size < 30){
+            stem.stream().forEach{ fish -> res+="${fish.state}," }
+        }
+        return "FishStem day $day count: ${stem.size}  $res"
     }
 
 }
@@ -65,4 +74,9 @@ class LightFish(initState: Int){
 fun getRawInput(filename: String): String {
     val path = "src/main/resources/"
     return File(path + filename).readText()
+}
+
+fun getFishFromFile(filename: String): List<LightFish> {
+    return getRawInput(filename).split(',')
+        .stream().map{ LightFish(it.toInt()) }.toList()
 }
