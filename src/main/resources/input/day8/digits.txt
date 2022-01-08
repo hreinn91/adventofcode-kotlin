@@ -1,0 +1,103 @@
+
+ 0000
+1    2
+1    2
+ 3333
+4    5
+4    5
+ 6666
+
+
+
+ dddd
+e    a
+f    b
+ efef
+c    a
+g    b
+ cgcg
+
+
+ dddd
+e
+f
+ efef
+c    a
+g    b
+ cgcg
+
+
+ dddd
+e    a
+f    b
+
+c    a
+g    b
+ cgcg
+
+
+ dddd
+e    a
+f    b
+ efef
+     a
+     b
+ cgcg
+
+
+
+Input
+
+1
+ab
+
+7
+dab
+
+4
+eafb
+
+2 3 5
+cdfbe -> 5
+gcdfa -> 2
+fbcad -> 3
+
+cagedb 0 6 9
+cefabd
+cdfgeb
+
+acedgfb 8
+
+Output
+
+cdfeb fcadb cdfeb cdbaf
+
+
+//    1 4 7 8 = listOf(2, 4, 3, 7)
+ab = 1
+dab = 7
+eafb = 4
+acedgfb = 8
+
+
+
+
+
+
+gc 1
+
+cbg 7
+
+gfec 4
+
+begcd 3
+fbgde 5
+abcde 2
+
+edbfga
+gfcbed 9
+acbgfd
+
+gcadebf 8
+
+| fcgedb cgb dgebacf gc

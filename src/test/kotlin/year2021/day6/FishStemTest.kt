@@ -1,10 +1,12 @@
 package year2021.day6
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class FishStemTest {
 
+    @Disabled
     @Test
     fun createStem() {
         val fishStem = FishStem("input/day6/test1.txt")
@@ -23,6 +25,7 @@ internal class FishStemTest {
         )
     }
 
+    @Disabled
     @Test
     fun simulateStem_test() {
         val fishStem = FishStem("input/day6/test1.txt")
@@ -32,6 +35,7 @@ internal class FishStemTest {
         assertEquals(5934, fishStem.stem.size)
     }
 
+    @Disabled
     @Test
     fun simulateStem() {
         val fishStem = FishStem("input/day6/input.txt")
@@ -41,6 +45,7 @@ internal class FishStemTest {
         assertEquals(365131, fishStem.stem.size)
     }
 
+    @Disabled
     @Test
     fun simulateStemSmall() {
         val stem = getFishFromFile("input/day6/test1.txt")
@@ -48,6 +53,7 @@ internal class FishStemTest {
         assertEquals(26, fishCount(stem, 18))
     }
 
+    @Disabled
     @Test
     fun simulateStemMedium() {
         val stem = getFishFromFile("input/day6/test1.txt")
@@ -55,6 +61,7 @@ internal class FishStemTest {
         assertEquals(5934, fishCount(stem, 80))
     }
 
+    @Disabled
     @Test
     fun simulateStemBig() {
         val stem = getFishFromFile("input/day6/input.txt")
@@ -62,12 +69,14 @@ internal class FishStemTest {
         assertEquals(365131, fishCount(stem, 80))
     }
 
+    @Disabled
     @Test
     fun simulateStemBigBig() {
         val stem = getFishFromFile("input/day6/test1.txt")
         assertEquals(26984457539, fishCount(stem, 256))
     }
 
+    @Disabled
     @Test
     fun simulateStemBigBigBig() {
         val stem = getFishFromFile("input/day6/input.txt")

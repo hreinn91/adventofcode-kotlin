@@ -12,13 +12,19 @@ repositories {
 }
 
 dependencies {
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0") //for JVM platform
+
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
 }
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions.jvmTarget = "16"
 }
